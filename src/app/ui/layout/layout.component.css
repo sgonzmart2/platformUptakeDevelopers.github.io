@@ -1,0 +1,114 @@
+.margenTop {
+    margin-top: 4px;
+}
+
+.blanco {
+    background: white;
+}
+
+.other {
+    background: white
+}
+
+.breadIzq {
+    margin-left: -10px;
+}
+
+.linea {
+    border-bottom: 2px solid white;
+}
+
+.bgBusqueda {
+    background: white;
+    margin-left: -5px;
+}
+
+div#hola {
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 12px;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.breadIzq[_ngcontent-c1] {
+    margin-left: 0;
+}
+
+div#contenido {
+    border-style: solid;
+    border-color: rgb(204, 203, 203);
+    border-width: thin;
+    border-right: none;
+    max-width: 100%;
+    border-left: none;
+    border-top: none;
+}
+
+.app-footer {
+    display: absolute;
+    height: 100%;
+    bottom: 0;
+}
+
+div#principal {
+    /* En funcion de alto y ancho */
+    min-height: 100vh;
+    height: 100vh;
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+}
+
+a {
+    font-size: 25px;
+    color: rgb(38, 144, 174);
+    /* font-family: serif; */
+}
+
+.a {
+    font-size: 20px;
+}
+
+::ng-deep .mat-form-field-prefix,
+.mat-form-field-suffix {
+    white-space: nowrap;
+    flex: none;
+    position: relative;
+    align-self: center;
+}
+
+::ng-deep .mat-form-field#arrow div.mat-select-arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid;
+    margin: 0 10px;
+    /* margin-bottom: 10px; */
+}
+
+.primero {
+    background-color: rgb(38, 144, 174);
+    height: 30px;
+    border-color: rgb(38, 144, 174);
+    color: white;
+    width: auto;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.primero:hover img#change {
+    transform: rotate(180deg);
+}
+
+.primero:hover {
+    transform: scale(1.05);
+}

@@ -1,0 +1,22 @@
+<mat-sidenav-container>
+    <!--<mat-sidenav #sidenav role="navigation">
+        <app-sidenav-menu (sidenavClose)="sidenav.close()"></app-sidenav-menu>
+    </mat-sidenav>-->
+    <div id="principal">
+        <div>
+            <div id="header" [ngStyle]="{'zoom': zoom}">
+                <app-header *ngIf="!(isLogin || isForgotPass)"></app-header>
+            </div>
+        </div>
+
+        <div style="background-color: white;" id="contenido" [ngClass]="Style" [ngStyle]="{'zoom': zoom}">
+            <div class="container responsive block ">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+        <!--<div id="foot" class="container" [ngStyle]="{'zoom': zoom}">
+            <app-footer></app-footer>
+        </div>-->
+    </div>
+</mat-sidenav-container>

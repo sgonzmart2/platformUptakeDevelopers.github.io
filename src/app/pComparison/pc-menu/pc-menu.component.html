@@ -1,0 +1,74 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'comparison_global_score_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'global_score_title' | translate}}</span>
+                <img *ngIf="selected_tab_gs" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_gs" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-global-score [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)"></app-pc-global-score>
+            </ng-template>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'comparison_dimension_view_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'dimension_view_label' | translate}}</span>
+                <img *ngIf="selected_tab_dim" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_dim" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-dimension-menu [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)"></app-pc-dimension-menu>
+            </ng-template>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'comparison_user_view_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'users_view_label' | translate}}</span>
+                <img *ngIf="selected_tab_user_view" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_user_view" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-user-menu [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)"></app-pc-user-menu>
+            </ng-template>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'comparison_statistics_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'statistics_label' | translate}}</span>
+                <img *ngIf="selected_tab_statistics" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_statistics" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-statistics [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)"></app-pc-statistics>
+            </ng-template>
+        </div>
+    </mat-tab>
+</mat-tab-group>

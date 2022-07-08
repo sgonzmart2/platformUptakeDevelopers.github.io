@@ -1,0 +1,94 @@
+<div class="row" style="width: 100%;margin-top:35px">
+    <div class="col-md-1">
+        {{'platforms'|translate }}
+    </div>
+    <div class="col-md-3">
+        <mat-form-field style="margin-left: 35px;" appearance="outline">
+            <mat-label>{{'select_platforms'|translate}}</mat-label>
+            <mat-select [(value)]="selectedPlatforms" multiple>
+                <mat-option #allPlatforms (click)="selectAllPlatforms()" value="all_platforms">
+                    {{'all_platforms' |translate}}</mat-option>
+                <mat-option *ngFor="let pltfm of platformsTitles" [value]="pltfm.key" (click)="applyFilter()">
+                    {{pltfm.title}} </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="col-md-3">
+        <div *ngIf="isLoadingPlatforms || isLoadingScores || isLoadingKPIsValues">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+    </div>
+    <div class="col-md-1">
+        {{'period'|translate }}
+    </div>
+    <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>{{'select_period'|translate}}</mat-label>
+            <mat-select [(value)]="period_selected_id" (selectionChange)="refreshPageWithNewPeriod()">
+                <mat-option *ngFor="let period of periods" [value]="period.measurement_period_id">
+                    {{period.measurement_period_title}} ({{period.from_date| date:'LLL-yy'}}-{{period.until_date|
+                    date:'LLL-yy'}})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row" style="width: 100%;margin-top:10px;margin-bottom: 20px;" *ngIf="!isLoading">
+    <div class="table-container" style="width: 100%;">
+        <table mat-table [dataSource]="tableDataSource" matSort matSortActive="position" matSortDirection="asc">
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>{{'position'|translate}}<label class="pointer"
+                        matTooltip="{{'info_platform_comparison_ranking_dimension_cluster'|translate}}"
+                        matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                        <img src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                            style="margin-left: 5px;">
+                    </label></th>
+                <td mat-cell *matCellDef="let data">
+                    <ng-container *ngIf="data.position!=null">{{data.position}}</ng-container>
+                    <ng-container *ngIf="data.position==null">--</ng-container>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="platform">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="min-width: 250px;">
+                    {{'platform_title' |translate}}
+                </th>
+                <td mat-cell *matCellDef="let data"><img src={{data.icon}} style="width: 75px;margin-right: 5px;">
+                    {{data.platform}}
+
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="score_variation">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let data" style="width: 50px;"> <img src={{data.score_variaton_icon}}
+                        style="margin-left: 15px;">
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="score">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef>{{'score_of_the_dimension'|translate}}<label
+                        class="pointer" matTooltip="{{'info_platform_comparison_score_dimension_cluster'|translate}}"
+                        matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                        <img src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                            style="margin-left: 5px;">
+                    </label></th>
+                <td mat-cell *matCellDef="let data">
+                    <ng-container *ngIf="data.score!=null">{{data.score}}</ng-container>
+                    <ng-container *ngIf="data.score==null">--</ng-container>/100
+                </td>
+            </ng-container>
+            <ng-container *ngFor="let kpi of listKPIs" [cdkColumnDef]="kpi.complete_id">
+                <th mat-header-cell *matHeaderCellDef>
+                    <img src="/assets/icons/info_black.png" width="15px" height="15px" style="margin-left: 5px;"
+                        matTooltip={{kpi.title}}>
+                    <div class="row">{{kpi.complete_id}}</div>
+                </th>
+                <td mat-cell *matCellDef="let item" style="min-width:  75px;">
+                    <ng-container *ngIf="item.KPIsValues[kpi.kpi_id]!=-1">{{item.KPIsValues[kpi.kpi_id]}}</ng-container>
+                    <ng-container *ngIf="item.KPIsValues[kpi.kpi_id]==-1">--</ng-container>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsTitle; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsTitle;"></tr>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'dimension_view_technical_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{technical_label}}</span>
+                <img *ngIf="selected_tab_dim_tech" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_dim_tech" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-dimension-technical [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)">
+                </app-pc-dimension-technical>
+            </ng-template>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'dimension_view_business_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{business_label}}</span>
+                <img *ngIf="selected_tab_dim_bussiness" src="/assets/icons/info_light_blue.png" width="15px"
+                    height="15px" style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_dim_bussiness" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-dimension-business [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)">
+                </app-pc-dimension-business>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'dimension_view_contextual_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{contextual_label}}</span>
+                <img *ngIf="selected_tab_dim_contextual" src="/assets/icons/info_light_blue.png" width="15px"
+                    height="15px" style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_dim_contextual" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-pc-dimension-contextual [selectedPlatforms]="selectedPlatforms"
+                    (selectedPlatformsUpdate)="updateSelectedPlatforms($event)">
+                </app-pc-dimension-contextual>
+            </ng-template>
+        </div>
+    </mat-tab>
+</mat-tab-group>

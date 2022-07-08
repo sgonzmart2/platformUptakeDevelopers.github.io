@@ -1,0 +1,50 @@
+img#logo {
+    max-width: 70px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+div#logo {
+    vertical-align: bottom;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+p {
+    margin: 0;
+}
+
+div#principal {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+    bottom: 0;
+}
+
+div {
+    padding-right: 0%;
+}
+
+p {
+    margin-top: auto;
+    bottom: 1px;
+    width: 100%;
+    text-align: right;
+}
+
+.footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 30px;
+    width: 100%;
+    background: #999;
+    margin-top: 0px;
+    padding-top: 0px;
+}
+
+.container {
+    text-align: start;
+}

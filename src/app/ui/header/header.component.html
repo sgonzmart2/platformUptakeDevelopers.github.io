@@ -1,0 +1,145 @@
+<!--<nav class="section navbar navbar-fixed header-classic navbar-dark bg-white my-0">
+    <div class="container">
+        <div *ngIf="isHome" id="header" class="col-md-1" style="margin-left: 0px; margin-right: 0px;">
+            <img id="imup" class='logo-header' width="378px" height="75px" routerLink="/home" src="../assets/logos/logo_big.png">
+        </div>
+
+
+        <div *ngIf="isHome" id="title" style="font-size: 30px" class="col-md-7 center">
+            {{tituloActual | translate}}
+        </div>
+        <div *ngIf="!isHome" id="title" style="font-size: 30px" class="col-md-12 center">
+            <button mat-button (click)="backClicked()">
+                <span style="float: left; width: 1%; text-align: left;" class="material-icons">arrow_back_ios</span>
+            </button>
+            <span style="float: center; width: 100%; text-align: center;">{{tituloActual | translate}}</span>
+        </div>
+
+
+        <div *ngIf="isHome" style="margin-right:15px;" routerLink="/profile" class="col-md-1">
+            <div class="row">
+                <div class="column" style="color: black">
+                    <div class="d-flex justify-content-center">
+                        <a class="nav-item nav-link" target="_blank">
+                            <img height="40" width="40" src="../assets/icons/user.png">
+                        </a>
+                    </div>
+                    <pre class="d-flex justify-content-center overflow-text" style="font-size: 13px;">{{user_name}}</pre>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isHome" class="col-md-1">
+            <div class="row">
+                <div class="column" style="color: black">
+
+                    <div class="d-flex justify-content-center">
+                        <a class="nav-item nav-link" target="_blank">
+                            <img id="imup" height="40" width="40" src="../assets/icons/logout.png" (click)="logout()" value="logout">
+                        </a>
+                    </div>
+                    <pre class="d-flex justify-content-center" style="font-size: 13px;">{{'logout' | translate}}</pre>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>-->
+
+
+
+
+<nav class="section navbar navbar-fixed header-classic navbar-dark bg-white my-0">
+    <!--
+    <div class="container">
+        <button *ngIf="!isHome" mat-button (click)="backClicked()">
+            <span style="float: left; width: 19%; text-align: left;" class="material-icons color_blue_ligth">home</span>
+        </button>
+        <div id="header" class="col-md-1" style="margin-left: 0px; margin-right: 0px;">
+            <img id="imup" class='logo-header' width="378px" height="75px" routerLink="/home"
+                src="../assets/logos/logo_big.png">
+        </div>
+
+
+        <div id="title" style="font-size: 30px; " class="col-md-7 center">
+
+        </div>
+
+
+
+        <div style="margin-right:15px;" routerLink="/profile" class="col-md-1">
+            <div class="row">
+                <div class="column" style="color: black">
+                    <div class="d-flex justify-content-center">
+                        <a class="nav-item nav-link" target="_blank">
+                            <img height="40" width="40" src="../assets/icons/user.png">
+                        </a>
+                    </div>
+                    <pre class="d-flex justify-content-center overflow-text"
+                        style="font-size: 13px;">{{user_name}}</pre>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="row">
+                <div class="column" style="color: black">
+
+                    <div class="d-flex justify-content-center">
+                        <a class="nav-item nav-link" target="_blank">
+                            <img id="imup" height="40" width="40" src="../assets/icons/help.png" (click)="info()">
+                        </a>
+                    </div>
+                    <pre class="d-flex justify-content-center"
+                        style="font-size: 13px;">{{'user_manual' | translate}}</pre>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1">
+            <div class="row">
+                <div class="column" style="color: black">
+
+                    <div class="d-flex justify-content-center">
+                        <a class="nav-item nav-link" target="_blank">
+                            <img id="imup" height="40" width="40" src="../assets/icons/logout.png" (click)="logout()"
+                                value="logout">
+                        </a>
+                    </div>
+                    <pre class="d-flex justify-content-center" style="font-size: 13px;">{{'logout' | translate}}</pre>
+
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div *ngIf="!isHome" id="title" style="font-size: 30px; background-color: #122D67; margin-top:20px; width: 40px;" class="col-md-12 center">
+        <div class="col-md-12 center">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">
+                <button *ngIf="!isHome" mat-button (click)="backClicked()" style="margin-left: 10px;">
+                    <span style="float: left; width: 55%; text-align: left;" class="material-icons"
+                        style="font-size:40px;color:white">home</span>
+                </button>
+            </div>
+            <div class="col-md-4 center">
+                <span style="float: center; width: 100%; text-align: center; color: white;font-size:30px">{{tituloActual
+                    |translate}}</span>
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-3 center">
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="isHome" class="col-md-12 center" id="title" style="font-size: 30px; background-color: #122D67; margin-top:20px;">
+        <div class="col-md-4"></div>
+
+        <div class="col-md-4 center">
+            <span style="float: center; width: 100%; text-align: center; color: white;font-size:30px">{{tituloActual|translate}}</span>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3 center">
+            <span style="float: center; width: 100%; text-align: center; color: white;font-size:20px"><i
+                    class='fa fa-user' style='font-size:20px; color: white;'></i> {{user_rol}}</span>
+        </div>
+
+    </div>
+</nav>

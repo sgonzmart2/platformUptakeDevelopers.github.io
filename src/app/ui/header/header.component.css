@@ -1,0 +1,183 @@
+.derecha {
+    box-align: right;
+}
+
+.centro {
+    box-align: centre;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.izquierda {
+    box-align: left;
+}
+
+pre {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center
+}
+
+img#imagen {
+    max-width: 15px;
+    max-height: 15px;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+    -webkit-text-decoration-skip: objects;
+    max-width: 100px;
+}
+
+pre {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+
+a {
+    float: left;
+}
+
+div#title {
+    font-size: 30px;
+    font-weight: bold;
+    /* font-family: serif; */
+}
+
+nav {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+ ::ng-deep .mat-menu-content:not(:empty) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    width: 270px;
+}
+
+div#title_notification {
+    border-top: solid;
+    border-bottom: solid;
+    border-color: darkgrey;
+    border-width: 1px
+}
+
+ ::ng-deep .mat-menu-panel {
+    min-width: 112px;
+    max-width: 280px;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 48px);
+    border-radius: 4px;
+    outline: 0;
+    /* border-color: rgb(194, 191, 191);
+    border: solid;
+    border-width: 1px; */
+}
+
+ ::ng-deep .mat-radio-label {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+ ::ng-deep .col-md-2 .notif {
+    flex: 0 0 0%;
+    max-width: 16.666667%;
+}
+
+button#cancel {
+    background-color: rgb(208, 208, 208);
+    text-align: center;
+    border-color: rgb(208, 208, 208);
+    color: rgb(64, 64, 64);
+    ;
+    margin-right: 7px;
+}
+
+button#save {
+    background-color: rgb(38, 144, 174);
+    border-color: rgb(38, 144, 174);
+    color: white;
+}
+
+
+/* Custom Progress bar */
+
+ ::ng-deep .mat-progress-bar-fill::after {
+    background-color: rgb(38, 144, 174);
+}
+
+ ::ng-deep .mat-progress-bar-buffer {
+    background: rgb(244, 254, 255);
+}
+
+ ::ng-deep .mat-progress-bar {
+    border: solid;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 4px;
+}
+
+
+/* style food */
+
+.q401:hover #quest401 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q402:hover #quest402 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q601:hover #quest601 {
+    background-color: rgb(238, 238, 238);
+}
+
+
+/* style physical */
+
+.q501:hover #quest501 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q502:hover #quest502 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q503:hover #quest503 {
+    background-color: rgb(238, 238, 238);
+}
+
+
+/* style profile */
+
+.q1:hover #quest1 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q21:hover #quest21 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q22:hover #quest22 {
+    background-color: rgb(238, 238, 238);
+}
+
+.q602:hover #quest602 {
+    background-color: rgb(238, 238, 238);
+}
+
+.overflow-text {
+    white-space: initial;
+}
