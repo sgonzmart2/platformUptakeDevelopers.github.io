@@ -1,0 +1,33 @@
+<div class="hy-100">
+    <div *ngIf="isLoading" class="center_loader">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="!isLoading" class="row" style="width: 100%">
+        <div class="col-12" style="width: 100%;margin-top:22px">
+            <h6>{{'self_assessment_results_title'|translate}}</h6>
+        </div>
+        <div *ngFor="let chart of arrayCharts" style="width: 100%;margin-top:22px">
+            <div class="col-12" style="margin-top: 15px;margin-bottom: 10px; ">
+                <p>{{'question'|translate}}: {{chart.title}}</p>
+            </div>
+
+            <div class="col-12 " style="width: 100%;margin-top:22px">
+                <div class="row">
+
+                    <div class="col-12 ">
+                        <ng-container *ngIf="chart.values[0]['data'].length>0">
+                            <canvas baseChart [datasets]="chart.values" [labels]="chart.labels"
+                                [options]="barChartOptions" chartType="bar" [legend]="false"></canvas>
+                        </ng-container>
+
+                        <ng-container *ngIf="chart.values[0]['data'].length==0">
+                            <p>{{'no_data'|translate}}
+                            </p>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <mat-divider style="margin-bottom: 10px;margin-top: 10px;"></mat-divider>
+        </div>
+    </div>
+</div>

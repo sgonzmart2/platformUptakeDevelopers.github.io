@@ -1,0 +1,59 @@
+<div class="row" style="width: 100%;margin-top:22px">
+    <div *ngIf="backToPlatforms" class="col-md-3 d-none d-md-block" [routerLink]="['/in-depth']">
+        <button mat-button class="btn btn-lg  btn-block btn btn-outline-primary">
+            <mat-icon>arrow_back_ios</mat-icon>
+            <span>{{'back_to_all_platforms' |translate}}</span>
+
+        </button>
+    </div>
+
+    <div *ngIf="!isAdmin" class="col-md-3 d-none d-md-block">
+    </div>
+
+    <div class="col-md-1 ">
+    </div>
+
+    <div class="col-md-3">
+        <img alt="{{platform.platform_title}}" style="max-height: 100px;" title="{{platform.platform_title}}"
+            src='{{platform.platform_logo_URL}}'>
+
+    </div>
+
+</div>
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'in_deep_ratings_label_tooltip'|translate}}" matTooltipPosition="below"
+                [matTooltipShowDelay]="1000">
+                <span>{{'ratings_and_comments_title' | translate}}</span>
+                <img *ngIf="selected_tab_ratings" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_ratings" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-in-deep-ratings></app-in-deep-ratings>
+            </ng-template>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'in_deep_feedback_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'feedback_details_title' | translate}}</span>
+                <img *ngIf="selected_tab_feedback" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_feedback" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-in-deep-feedback></app-in-deep-feedback>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+</mat-tab-group>

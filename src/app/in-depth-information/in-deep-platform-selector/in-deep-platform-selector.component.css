@@ -1,0 +1,10 @@
+.div_img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.pointer {
+    cursor: pointer;
+}

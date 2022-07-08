@@ -1,0 +1,21 @@
+<div class="row">
+    <div class="col-md-12 col-sm-12 " style="margin-top:5px;">
+        <h3>{{'select_platform_title'| translate}}</h3>
+        <div class="row" style="width:100%" *ngFor="let item of arrayPlatforms;">
+            <div [routerLink]="['/monitoring-menu']" skipLocationChange (click)="selectPlatform(platform)" class="container-fluid col-md-3 " *ngFor="let platform of item" style="text-align: center; margin-top: 5px;">
+                <div class="card container-fluid card mb-5 pointer">
+                    <div class="mt-auto div_img" style="text-align: center;min-height:250px; max-height: 250px; ">
+                        <img class="card-img-top mx-auto" style="max-width: 200px; max-height: 200px;" alt="{{platform.platform_title}}" title="{{platform.platform_title}}" src='{{platform.platform_logo_URL}}' [ngStyle]="{'background-color': (platform.platform_title=='Reach2020') ? '#0013a9' : '#ffffff'}">
+                    </div>
+                    <!--<div class="card-body" style="padding: 0%;">
+                        <h3 class="card-title">{{platform.platform_title}}</h3>
+                        <p class="card-text"> {{platform.platform_description}}</p>
+
+                    </div>-->
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

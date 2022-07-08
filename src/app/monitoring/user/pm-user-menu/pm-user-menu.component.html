@@ -1,0 +1,92 @@
+<mat-tab-group (selectedIndexChange)="f.setClusterSelected($event+1);selected.setValue($event+1)">
+    <mat-tab *ngFor=" let tab of kpi_cluster_names; let index=index " [label]=" tab ">
+        <ng-template mat-tab-label>
+            <label class=" pointer " matTooltip=" {{tab.cluster_description}} " [matTooltipShowDelay]=" 1000 ">
+                <span>{{tab.cluster_title}}</span>
+                <img *ngIf=" selected.value==index+1 " src=" /assets/icons/info_light_blue.png " width=" 15px "
+                    height=" 15px " style=" margin-left: 5px; ">
+                <img *ngIf=" selected.value!=index+1 " src=" /assets/icons/info_grey.png " width=" 15px "
+                    height=" 15px " style=" margin-left: 5px; ">
+            </label>
+        </ng-template>
+        <div class=" ">
+            <ng-template matTabContent>
+                <app-pm-tab>
+                </app-pm-tab>
+            </ng-template>
+        </div>
+    </mat-tab>
+</mat-tab-group>
+<!--
+<mat-tab-group (selectedTabChange)=" tabChanged($event) ">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class=" pointer " matTooltip=" {{ 'user_view_PEU_label_tooltip' |translate}} " matTooltipPosition=" below " [matTooltipShowDelay]=" 1000 ">
+                <span>{{peu_label}}</span>
+                <img *ngIf=" selected_tab_peu " src=" /assets/icons/info_light_blue.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+                <img *ngIf=" !selected_tab_peu " src=" /assets/icons/info_grey.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+            </label>
+        </ng-template>
+        <div class=" ">
+            <ng-template matTabContent>
+                <app-pm-user-peu>
+                </app-pm-user-peu>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class=" pointer " matTooltip=" {{ 'user_view_EUC_label_tooltip' |translate}} " matTooltipPosition=" below " [matTooltipShowDelay]=" 1000 ">
+                <span>{{euc_label}}</span>
+                <img *ngIf=" selected_tab_seu " src=" /assets/icons/info_light_blue.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+                <img *ngIf=" !selected_tab_seu " src=" /assets/icons/info_grey.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+            </label>
+        </ng-template>
+        <div class=" ">
+            <ng-template matTabContent>
+                <app-pm-user-euc>
+                </app-pm-user-euc>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class=" pointer " matTooltip=" {{ 'user_view_TP_label_tooltip' |translate}} " matTooltipPosition=" below " [matTooltipShowDelay]=" 1000 ">
+                <span>{{tp_label}}</span>
+                <img *ngIf=" selected_tab_aal_sdp " src=" /assets/icons/info_light_blue.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+                <img *ngIf=" !selected_tab_aal_sdp " src=" /assets/icons/info_grey.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+            </label>
+        </ng-template>
+        <div class=" ">
+            <ng-template matTabContent>
+                <app-pm-user-tp>
+                </app-pm-user-tp>
+            </ng-template>
+        </div>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class=" pointer " matTooltip=" {{ 'user_view_GOV_label_tooltip' |translate}} " matTooltipPosition=" below " [matTooltipShowDelay]=" 1000 ">
+                <span>{{gov_label}}</span>
+                <img *ngIf=" selected_tab_aut_fac " src=" /assets/icons/info_light_blue.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+                <img *ngIf=" !selected_tab_aut_fac " src=" /assets/icons/info_grey.png " width=" 15px " height=" 15px "
+                    style=" margin-left: 5px; ">
+            </label>
+        </ng-template>
+        <div class=" ">
+            <ng-template matTabContent>
+                <app-pm-user-gov>
+                </app-pm-user-gov>
+            </ng-template>
+        </div>
+    </mat-tab>
+</mat-tab-group>-->

@@ -1,0 +1,96 @@
+<div class="hy-100">
+    <div class="row" style="margin-top:22px">
+        <div class="col-md-3 d-none d-md-block" [routerLink]="['/monitoring']">
+            <div class="row"></div>
+            <button mat-button class="btn btn-lg  btn-block btn btn-outline-primary">
+                <mat-icon>arrow_back_ios</mat-icon>
+                <span>{{'back_to_all_platforms' |translate}}</span>
+
+            </button>
+        </div>
+
+        <div class="col-md-1 ">
+        </div>
+        <div class="col-md-3">
+            <img alt="{{platform.platform_title}}" style="max-height: 100px;" title="{{platform.platform_title}}"
+                src='{{platform.platform_logo_URL}}'>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-3; center">
+
+            <div class="row">{{'global_score_title' |translate}}:
+                {{platform.global_score}}/100{{'&nbsp;'}}
+                <img src='{{score_platform_selected_icon}}'>{{'&nbsp;'}}<label class="pointer"
+                    matTooltip="{{'info_platform_global_score'|translate}}" matTooltipPosition="below"
+                    [matTooltipShowDelay]="500">
+                    <img src="/assets/icons/info_light_blue.png" width="15px" height="15px" style="margin-left: 5px;">
+                </label>
+            </div>
+            <div class="row">
+                {{'ranking'|translate}}: {{platform.global_ranking}}{{'out_of'|translate}}{{num_platforms}}{{'&nbsp;'}}
+                <label class="pointer" matTooltip="{{'info_platform_global_ranking'|translate}}"
+                    matTooltipPosition="below" [matTooltipShowDelay]="500">
+                    <img src="/assets/icons/info_light_blue.png" width="15px" height="15px" style="margin-left: 5px;">
+                </label>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row"></div>
+
+<div>
+    <mat-tab-group (selectedTabChange)="tabChanged($event)">
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <label class="pointer" matTooltip="{{'monitoring_dimension_view_label_tooltip'|translate}}"
+                    matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                    <span>{{'dimension_view_label' | translate}}</span>
+                    <img *ngIf="selected_tab_dimension" src="/assets/icons/info_light_blue.png" width="15px"
+                        height="15px" style="margin-left: 5px;">
+                    <img *ngIf="!selected_tab_dimension" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                        style="margin-left: 5px;">
+                </label>
+            </ng-template>
+            <div class="">
+                <ng-template matTabContent>
+                    <app-pm-dimension-menu></app-pm-dimension-menu>
+                </ng-template>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <label class="pointer" matTooltip="{{'monitoring_user_view_label_tooltip'|translate}}"
+                    matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                    <span>{{'users_view_label' | translate}}</span>
+                    <img *ngIf="selected_tab_user_view" src="/assets/icons/info_light_blue.png" width="15px"
+                        height="15px" style="margin-left: 5px;">
+                    <img *ngIf="!selected_tab_user_view" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                        style="margin-left: 5px;">
+                </label>
+            </ng-template>
+            <div class="">
+                <ng-template matTabContent>
+                    <app-pm-user-menu></app-pm-user-menu>
+                </ng-template>
+            </div>
+        </mat-tab>
+        <mat-tab>
+            <ng-template mat-tab-label>
+                <label class="pointer" matTooltip="{{'monitoring_statistics_label_tooltip'|translate}}"
+                    matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                    <span>{{'statistics_label' | translate}}</span>
+                    <img *ngIf="selected_tab_statistics" src="/assets/icons/info_light_blue.png" width="15px"
+                        height="15px" style="margin-left: 5px;">
+                    <img *ngIf="!selected_tab_statistics" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                        style="margin-left: 5px;">
+                </label>
+            </ng-template>
+            <div class="">
+                <ng-template matTabContent>
+                    <app-pm-statistics></app-pm-statistics>
+                </ng-template>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

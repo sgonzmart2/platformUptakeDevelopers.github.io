@@ -1,0 +1,43 @@
+.half_red {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: red;
+}
+
+.half_green {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: green;
+}
+
+.half_gold {
+    position: absolute;
+    display: inline-block;
+    overflow: hidden;
+    color: gold;
+}
+
+.star {
+    position: relative;
+    display: inline-block;
+    font-size: 3rem;
+    color: #d3d3d3;
+}
+.star2 {
+    position: relative;
+    display: inline-block;
+    font-size: 1rem;
+    color: #d3d3d3;
+}
+.center {
+    text-align: center;
+}
+
+.center_loader {
+    display: flex;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,47 @@
+<div class="row" style="width: 100%;margin-top:22px">
+    <div class="col-md-7">
+    </div>
+
+    <div class="col-md-1">
+        {{'period'|translate }}
+    </div>
+    <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>{{'select_period'|translate}}</mat-label>
+            <mat-select [(value)]="period_selected_id" (selectionChange)="refreshPageWithNewPeriod()">
+                <mat-option *ngFor="let period of periods" [value]="period.measurement_period_id">
+                    {{period.measurement_period_title}} ({{period.from_date| date:'LLL-yy'}}-{{period.until_date| date:'LLL-yy'}})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="col-md-12 col-sm-12" style="margin-top:10px;">
+    <table>
+        <colgroup>
+            <col span="1" style="width: 1%; ">
+            <col span="1" style="width: 24%; ">
+            <col span="1" style="width: 2%; ">
+            <col span="1" style="width: 1%; ">
+            <col span="1" style="width: 2%; ">
+            <col span="1" style="width: 17%">
+            <col span="1" style="width: 7%;">
+            <col span="1" style="width: 24%; ">
+            <col span="1" style="width: 2%; ">
+            <col span="1" style="width: 1%; ">
+            <col span="1" style="width: 2%; ">
+            <col span="1" style="width: 17%">
+        </colgroup>
+        <tr *ngFor="let statisticsL1 of statisticsToShow">
+            <ng-container *ngFor="let statistic of statisticsL1">
+                <td></td>
+                <td>{{statistic.title}}</td>
+                <td>{{statistic.value}}</td>
+                <td><span *ngIf="statistic.is_percentage">%</span></td>
+                <td></td>
+                <td><button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="showEvolution(statistic.statistics_id)">{{'see_evolution'|translate}}</button></td>
+            </ng-container>
+        </tr>
+    </table>
+</div>

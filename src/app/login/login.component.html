@@ -1,0 +1,43 @@
+<!--<div class="container">
+    <div class="row">
+        <div class="col-md-4  mr-0"></div>
+        <div class="col-md-5 mt-8">
+            <div>
+                <img id="logo" src="../assets/logos/logo.png" style="max-width: 350px; max-height: 350px;" class="img-responsive imagenLogin" alt="" />
+            </div>
+            <br>
+            <alert></alert>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <input type="email" formControlName="email" class="form-control" placeholder="{{'email' | translate}}" [ngClass]="{ 'is-invalid': submitted && form.email.errors }" />
+                    <div *ngIf="submitted && form.email.errors" class="invalid-feedback">
+                        <div *ngIf="form.email.errors.required">{{'email_required' | translate}}</div>
+                        <div *ngIf="form.email.errors.email">Email not valid.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="password" formControlName="password" class="form-control" placeholder="{{'password' | translate}}" [ngClass]="{ 'is-invalid': submitted && loginForm.controls.password.errors }" />
+                    <div *ngIf="submitted && loginForm.controls.password.errors" class="invalid-feedback">
+                        <div *ngIf="form.email.errors.required">{{'password_required' | translate}}</div>
+                    </div>
+                </div>
+                <br>
+                <a routerLink="/forgot_password">
+                    <p style="text-align: center; font-weight: 500;"> {{'forgot_password' | translate}}
+                        <p>
+                </a>
+                <br>
+                <div class="form-group">
+                    <button class="btn btn-lg  btn-block btn btn-outline-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>{{'login' | translate}}</button>
+                </div>
+                <div *ngIf="error" class="alert alert-danger">{{'login.error' | translate}}</div>
+            </form>
+        </div>
+    </div>
+</div>-->
+
+<div class="center">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
