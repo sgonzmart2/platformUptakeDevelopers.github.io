@@ -1,0 +1,57 @@
+<div id="modal-content-wrapper">
+    <div class="modal-header">
+        <p style="font-size: 20px; margin-bottom: 0" class="center">
+            <div>{{nameGraph}}</div>
+            <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+
+    <div class="row" style="width: 100%;margin-top:20px">
+        <div class="col-md-1">
+        </div>
+
+
+        <div class="col-md-5">
+            <span>{{'original_value'|translate}}</span>
+        </div>
+
+        <div class="col-md-5">
+            <span>{{'normalized_value'|translate}}</span>
+        </div>
+    </div>
+
+    <div class="row" style="width: 100%;margin-top:20px">
+        <div class="col-md-1">
+        </div>
+
+
+        <div class="col-md-5">
+            <canvas baseChart [datasets]="chartOriginalEvolution" [labels]="barChartOriginalLabels" [options]="barChartOptionsOriginal" chartType="line" [legend]="false">
+      </canvas>
+        </div>
+
+        <div class="col-md-5">
+            <canvas baseChart [datasets]="chartNormalizedEvolution" [labels]="barChartNormalLabels" [options]="barChartOptions" chartType="line" [legend]="false"></canvas>
+        </div>
+    </div>
+    <!--<div class="modal-header">
+    <p style="font-size: 20px; margin-bottom: 0" class="center">
+    <div translate="evolution_of_XXX_title" [translateParams]="{NAME: nameGraph | translate}">{{typeGraph}}</div>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row" style="margin-top:20px">
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-10">
+        <canvas baseChart [datasets]="chartEvolution" [labels]="barChartEvolutionLabels" [options]="barChartOptions"
+          chartType="line" [legend]="false"></canvas>
+      </div>
+    </div>
+  </div>-->
+</div>

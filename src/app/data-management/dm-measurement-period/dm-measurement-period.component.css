@@ -1,0 +1,24 @@
+.table-container {
+    margin-top: 10px;
+    overflow: auto;
+}
+
+.mat-column-period_title {
+    width: 50%;
+}
+
+.mat-column-period_ready {
+    width: 15%;
+}
+
+.mat-column-from {
+    width: 10%;
+}
+
+.mat-column-until {
+    width: 10%;
+}
+
+.mat-column-edit_button {
+    width: 15%;
+}

@@ -1,0 +1,43 @@
+.example-container {
+    width: 400px;
+    max-width: 100%;
+    margin: 0 25px 25px 0;
+    display: inline-block;
+    vertical-align: top;
+    cursor: move;
+}
+
+.example-box {
+    max-width: 100%;
+    margin: 0 25px 25px 0;
+    display: inline-block;
+    vertical-align: top;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.botton_line {
+    border-bottom: solid 1px #000;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+mat-divider {
+    width: 100%;
+}
+
+.my-container {
+    width: 400px;
+    max-width: 100%;
+}

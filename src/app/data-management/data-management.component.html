@@ -1,0 +1,108 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_platform_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'platform_title' | translate}}</span>
+                <img *ngIf="selected_tab_platform" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_platform" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-platform></app-dm-platform>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="isAdmin">
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_KPIs_definition_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'kpi_label' | translate}}</span>
+                <img *ngIf="selected_tab_kpi" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_kpi" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-kpi></app-dm-kpi>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <!-- <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_KPIs_label_tooltip'|translate}}" matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'kpi_values_title' | translate}}</span>
+                <img *ngIf="selected_tab_kpi_def" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_kpi_def" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-kpi-values></app-dm-kpi-values>
+            </ng-template>
+        </div>
+    </mat-tab>
+-->
+    <mat-tab *ngIf="isAdmin">
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_statistics_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'statistics_label' | translate}}</span>
+                <img *ngIf="selected_tab_statistics" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_statistics" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-statistics-menu></app-dm-statistics-menu>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="isAdmin">
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_period_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'measurement_period_title' | translate}}</span>
+                <img *ngIf="selected_tab_period" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_period" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-measurement-period></app-dm-measurement-period>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+    <mat-tab *ngIf="isAdmin">
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_statistics_label_tooltip'|translate}}"
+                matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'contextual_questionns' | translate}}</span>
+                <img *ngIf="selected_tab_contextual" src="/assets/icons/info_light_blue.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_contextual" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-contextual></app-dm-contextual>
+            </ng-template>
+        </div>
+    </mat-tab>
+</mat-tab-group>

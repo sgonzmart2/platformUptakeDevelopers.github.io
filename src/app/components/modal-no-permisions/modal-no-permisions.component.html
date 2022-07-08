@@ -1,0 +1,13 @@
+<div id="modal-content-wrapper">
+    <div class="modal-header">
+        <p style="font-size: 20px; margin-bottom: 0" class="center">
+            <div>{{'no_permissions_title' |translate}}</div>
+            <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+
+    <div class="modal-body">
+        <span [innerHTML]="'no_permissions_msg' | translate"></span>
+    </div>
+</div>

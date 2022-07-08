@@ -1,0 +1,110 @@
+<div class="row" style="width: 100%;margin-top:30px;">
+    <div class="col-md-8">
+    </div>
+    <div class="col-md-1">
+        {{'period'|translate }}
+    </div>
+    <div class="col-md-3">
+        <mat-form-field appearance="outline">
+            <mat-label>{{'select_period'|translate}}</mat-label>
+            <mat-select [(value)]="period_selected_id" (selectionChange)="refreshPageWithNewPeriod()">
+                <mat-option *ngFor="let period of periods" [value]="period.measurement_period_id">
+                    {{period.measurement_period_title}}({{period.from_date| date:'LLL-yy'}}-{{period.until_date| date:'LLL-yy'}})
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div *ngFor="let pltfm of platforms" style="width: 100%;margin-bottom:25px;">
+    <div class="row" style="width: 100%;">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-4">
+            <img class="img-container" alt="{{pltfm.title}}" title="{{pltfm.title}}" src='{{pltfm.platform_logo_URL}}' [ngStyle]="{'background-color': (pltfm.title=='Reach2020') ? '#0013a9' : '#ffffff'}">
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+    <div class="table-container" style="width: 100%;">
+        <table mat-table [dataSource]="pltfm.listStatistics">
+            <ng-container matColumnDef="statistics_title">
+                <th mat-header-cell *matHeaderCellDef>{{'statistics_title'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.title}}</td>
+            </ng-container>
+            <ng-container matColumnDef="value">
+                <th mat-header-cell *matHeaderCellDef>{{'value'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.value}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="edit_button">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let data">
+                    <button mat-button class="btn-block btn btn-outline-primary" (click)="edit(pltfm.platform_id,data.statistic_id )">{{'edit'|translate}}</button>
+
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsTitle; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsTitle;"> </tr>
+
+
+        </table>
+    </div>
+    <div class="row" style="width: 100%;"></div>
+</div>
+
+<ng-template #addEditValue let-modal let-c="close" let-d="dismiss">
+    <div>
+        <div class="row" style="margin-top:22px">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                {{'add_new_statistic_value_title' |translate}}
+
+            </div>
+        </div>
+        <div class="row" style="margin-top:22px">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <img class="img-container" alt="{{pltfm_title}}" title="{{pltfm_title}}" src='{{platform_logo_URL}}' [ngStyle]="{'background-color': (pltfm_title=='Reach2020') ? '#0013a9' : '#ffffff'}">
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-top:15px">
+            <div class="col-md-1"></div>
+            <div class="col-md-11">
+                {{'add_new_statistic_value_msg' | translate: {STATISTIC_TITLE: statistics_selected_title, PERIOD: period_selected_title} }}
+            </div>
+        </div>
+        <div class="row" style="margin-top:15px">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                {{'insert_new_value_msg' | translate}}
+
+            </div>
+            <div class="col-md-4">
+                <div class="col-md-1"></div>
+                <input type="text" class="form-control" placeholder="{{'value' | translate}}" [(ngModel)]="valueToChange" [ngClass]="{ 'is-invalid': submitted }" />
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-top:15px">
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="c('Close click')">
+                    {{'cancel' | translate}}</button>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="save()">
+                    {{'save' | translate}}</button>
+            </div>
+
+        </div>
+        <div class="row" style="margin-top:15px"></div>
+
+    </div>
+</ng-template>

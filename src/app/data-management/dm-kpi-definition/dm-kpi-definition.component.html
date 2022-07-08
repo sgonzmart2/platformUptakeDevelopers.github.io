@@ -1,0 +1,928 @@
+<ng-container *ngTemplateOutlet="!showNewKPI ?  listKPITemplate : createNewKPITemplate">
+</ng-container>
+<ng-template #listKPITemplate>
+    <div>
+        <div class="row" style="width: 100%;margin-top:22px">
+            <div class="col-md-3">
+                <button (click)="changeView()"
+                    class="btn btn-lg  btn-block btn btn-outline-primary">{{'add_new_KPI'|translate}}</button>
+            </div>
+
+        </div>
+        <div class="row" style="width: 100%;margin-top:20px;margin-bottom: 20px;">
+        </div>
+    </div>
+
+    <div *ngIf="isLoading" class="center_loader;row" style="width: 100%;margin-top:22px">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div class="table-container" style="width: 100%">
+        <table mat-table [dataSource]="KPIs_list">
+            <ng-container matColumnDef="KPI_id">
+                <th mat-header-cell *matHeaderCellDef>{{'KPI_ID'|translate}}</th>
+                <td mat-cell *matCellDef="let data">KPI_{{data.kpi_id| number: '2.0-0'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="KPI_name">
+                <th mat-header-cell *matHeaderCellDef>{{'KPI_name'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.title}}</td>
+            </ng-container>
+            <ng-container matColumnDef="KPI_description">
+                <th mat-header-cell *matHeaderCellDef>{{'KPI_description'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.description}}</td>
+            </ng-container>
+            <ng-container matColumnDef="dimension">
+                <th mat-header-cell *matHeaderCellDef>{{'Dimension'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.dimension_title}}</td>
+            </ng-container>
+            <ng-container matColumnDef="cluster">
+                <th mat-header-cell *matHeaderCellDef>{{'Cluster'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.cluster_title}}</td>
+            </ng-container>
+            <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef>{{'Category'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.category_title}}</td>
+            </ng-container>
+            <ng-container matColumnDef="edit_button">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let data;let i = index;">
+                    <button mat-button class="btn-block btn btn-outline-primary"
+                        (click)="edit(data,i)">{{'edit'|translate}}</button>
+
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsTitle; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsTitle;let i = index;"> </tr>
+        </table>
+    </div>
+</ng-template>
+<div class="row" style="width: 100%;"></div>
+
+<ng-template #createNewKPITemplate>
+
+    <div *ngIf="isSaving" class="center_loader;row" style="width: 100%;height: 100vh;margin-top:22px">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="!isSaving" style="width: 100%;">
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-1">
+                {{'KPI_ID' | translate}}
+                <input type="text" class="form-control" [(ngModel)]="KPI_Selected.kpi_id"
+                    placeholder="{{'ID' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+
+            </div>
+
+            <div class="col-md-3">
+            </div>
+
+            <div class="col-md-7">
+                {{'KPI_name' | translate}}
+                <input type="text" class="form-control" placeholder="{{'KPI_name' | translate}}"
+                    [(ngModel)]="KPI_Selected.title" [ngClass]="{ 'is-invalid': submitted  }" />
+
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-11">
+                {{'KPI_description' | translate}}
+                <textarea rows="5" id="description" class="form-control" [(ngModel)]="KPI_Selected.description"
+                    placeholder="{{'KPI_description' | translate}}"></textarea>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-4">
+                {{'measurements_units'|translate}}
+                <input type="text" [(ngModel)]="KPI_Selected.unit_of_measurement"
+                    placeholder="{{'measurements_units' | translate}}" class="form-control"
+                    [ngClass]="{ 'is-invalid': submitted  }" />
+                <div *ngIf="submitted " class="invalid-feedback">
+                    <div *ngIf="form.measurements_units.errors.required">{{'register_on_required' | translate}}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+            </div>
+
+            <div class="col-md-4">
+                {{'default_weight'|translate}}
+                <input type="text" class="form-control" [(ngModel)]="KPI_Selected.default_weight"
+                    placeholder="{{'default_weight' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+                <div *ngIf="submitted " class="invalid-feedback">
+                    <div *ngIf="form.default_weight.errors.required">{{'default_weight_required' | translate}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:30px">
+            <div class="col-md-5">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'KPI_dimension'|translate}}</mat-label>
+                    <mat-select [(ngModel)]="KPI_Selected.dimension_id">
+                        <mat-option *ngFor="let dimension of kpi_dimension_names" [(value)]="dimension.dimension_id">
+                            {{dimension.dimension_title}}
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-1">
+            </div>
+
+            <div class="col-md-5">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'user_cluster'|translate}}</mat-label>
+                    <mat-select [(ngModel)]="KPI_Selected.cluster_id">
+                        <mat-option *ngFor="let cluster of kpi_cluster_names" [(value)]="cluster.cluster_id">
+                            {{cluster.cluster_title}}
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-6">
+                <mat-form-field appearance="outline">
+                    <mat-label>{{'KPI_categories'|translate}}</mat-label>
+                    <mat-select [(ngModel)]="KPI_Selected.category_id">
+                        <mat-option *ngFor="let cat of kpi_categories_list" [(value)]="cat.category_id">
+                            {{cat.category_title}}
+                        </mat-option>
+
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-3">
+                <ng-template #ShowHigherIsBetter>
+                    {{'higher_is_better'|translate}}<br>
+                    <mat-radio-group style="margin:5px;" [(ngModel)]="KPI_Selected.larger_is_better">
+                        <mat-radio-button [value]="true" style="margin:5px;">{{'yes'|translate}}
+                        </mat-radio-button>
+                        <mat-radio-button [value]="false">{{'no'|translate}}</mat-radio-button>
+                    </mat-radio-group>
+                </ng-template>
+            </div>
+        </div>
+
+        <div *ngFor="let item of kpi_categories_list">
+            <div *ngIf="item.category_id == KPI_Selected.category_id">
+                <div *ngIf="item.category_abbreviation == 'PPE/PNE'">
+                    <ng-container *ngTemplateOutlet="ShowHigherIsBetter"></ng-container>
+                    <ng-container *ngTemplateOutlet="quantitativeKPI"></ng-container>
+                </div>
+                <div *ngIf="item.category_abbreviation == 'PP'">
+                    <ng-container *ngTemplateOutlet="ShowHigherIsBetter"></ng-container>
+                    <ng-container *ngTemplateOutlet="quantitativeKPI"></ng-container>
+                </div>
+
+                <div *ngIf="item.category_abbreviation == 'B'">
+                    <ng-container *ngTemplateOutlet="B"></ng-container>
+                </div>
+
+                <div *ngIf="item.category_abbreviation == 'RS'">
+                    <ng-container *ngTemplateOutlet="ShowHigherIsBetter"></ng-container>
+                    <ng-container *ngTemplateOutlet="quantitativeKPI"></ng-container>
+                </div>
+
+                <div *ngIf="item.category_abbreviation == 'QC'">
+                    <ng-container *ngTemplateOutlet="QC"></ng-container>
+                </div>
+
+                <div *ngIf="item.category_abbreviation == 'PN'">
+                    <ng-container *ngTemplateOutlet="ShowHigherIsBetter"></ng-container>
+                    <ng-container *ngTemplateOutlet="quantitativeKPI"></ng-container>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #quantitativeKPI>
+            <table *ngIf="KPI_Selected.larger_is_better != null && KPI_Selected.larger_is_better">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>0</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}" [value]="0"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" [value]="KPI_Selected.one_left" class="form-control"
+                            placeholder="{{'to' | translate}}" [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}})</td>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.one_left" /> </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [value]="KPI_Selected.two_left"
+                            placeholder="{{'to' | translate}}" [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}})</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.two_left" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [value]="KPI_Selected.three_left"
+                            placeholder="{{'to' | translate}}" [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}})</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.three_left" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [value]="KPI_Selected.four_left"
+                            placeholder="{{'to' | translate}}" [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}})</td>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.four_left" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" placeholder="{{'to' | translate}}" value="greater"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+
+            </table>
+
+            <table *ngIf="KPI_Selected.larger_is_better != null && !KPI_Selected.larger_is_better">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}" [value]="0"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.zero_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.zero_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.one_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.two_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>0</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.three_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" placeholder="{{'to' | translate}}" value="greater"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+            </table>
+
+        </ng-template>
+
+        <!--<ng-template #PPE>
+            <table *ngIf="KPI_Selected.larger_is_better != null && KPI_Selected.larger_is_better">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td>0</td>
+
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}" [value]="0"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_left"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">1</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">3</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.zero_right" [attr.disabled]="true" /> </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.one_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">3</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">1</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.two_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">4</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">0</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.three_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" placeholder="{{'to' | translate}}" value="greater"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+
+            </table>
+
+        </ng-template>
+
+        <ng-template #PN>
+            <table *ngIf="KPI_Selected.larger_is_better != null">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">0</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">4</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}" [value]="0"
+                            [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.zero_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">1</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">3</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.zero_right" [attr.disabled]="true" /> </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.one_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">3</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">1</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.two_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">0</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">4</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.three_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" value="greater" [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}})</td>
+                </tr>
+            </table>
+
+            <table *ngIf="KPI_Selected.larger_is_better != null && !KPI_Selected.larger_is_better">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>[</td>
+                    <td><input type="text" [value]="0" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.four_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.four_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.three_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.two_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+
+                <tr>
+                    <td>0</td>
+                    <td>(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [value]="KPI_Selected.one_right" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" value="{{'inf'|translate}}" [attr.disabled]="true" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+            </table>
+        </ng-template>-->
+
+        <ng-template #QC>
+            <table>
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%; ">
+                    <col span="1 " style="width: 78%">
+                    <col span="1 " style="width: 1%; ">
+                    <col span="1 " style="width: 6%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <td></td>
+                    <th>{{'original_value'|translate}}</th>
+                    <td></td>
+                    <td><button class="mat-mini-fab btn btn-outline-primary" (click)="addValue()" style="size: 75%;"> <i
+                                class="fa fa-plus"></i></button></td>
+                </tr>
+                <tr *ngFor="let QCValue of KPI_Selected.qualitative_values; let index=index ">
+                    <td>
+                        <mat-form-field appearance="outline">
+
+                            <mat-select [(ngModel)]="QCValue.normalizedvalue">
+                                <mat-option *ngFor="let normalVal of normalValues" [(value)]="normalVal">
+                                    {{normalVal}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td></td>
+                    <td><input type="text" class="form-control" [(ngModel)]="QCValue.originalvalue"
+                            placeholder="{{'value' | translate}}" /></td>
+                    <td></td>
+                    <td *ngIf="KPI_Selected.qualitative_values.length>1"><button
+                            class="mat-mini-fab btn btn-outline-primary" (click)="removeValue(index)"
+                            style="size: 75%;"> <i class="fa fa-trash-o"></i></button></td>
+                </tr>
+            </table>
+
+        </ng-template>
+
+        <ng-template #B>
+            <table>
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%; ">
+                    <col span="1 " style="width: 78%">
+                    <col span="1 " style="width: 1%; ">
+                    <col span="1 " style="width: 6%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th>{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr *ngFor="let QCValue of KPI_Selected.qualitative_values; let index=index ">
+                    <td>
+                        <mat-form-field appearance="outline">
+                            <mat-select [(ngModel)]="QCValue.normalizedvalue">
+                                <mat-option *ngFor="let normalVal of normalValuesBoolean" [(value)]="normalVal">
+                                    {{normalVal}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </td>
+                    <td></td>
+                    <td><input type="text" class="form-control" [(ngModel)]="QCValue.originalvalue"
+                            placeholder="{{'value' | translate}}" /></td>
+                    <td></td>
+                </tr>
+            </table>
+        </ng-template>
+
+        <ng-template #RS>
+            <table *ngIf="KPI_Selected.larger_is_better != null">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">0</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">4</td>
+                    <td>[</td>
+
+                    <td><input type="text" class="form-control" [value]="0" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.zero_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">1</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">3</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_left"
+                            placeholder="{{'from' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_left"
+                            placeholder="{{'from' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">3</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">1</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.three_left" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+
+                    <td *ngIf="KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}})</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">{{KPI_Selected.unit_of_measurement}}]</td>
+                </tr>
+
+                <tr>
+                    <td *ngIf="KPI_Selected.larger_is_better">4</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">0</td>
+                    <td *ngIf="KPI_Selected.larger_is_better">[</td>
+                    <td *ngIf="!KPI_Selected.larger_is_better">(</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.four_left" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.four_right" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+
+            </table>
+
+            <table *ngIf="KPI_Selected.larger_is_better != null && !KPI_Selected.larger_is_better">
+                <colgroup>
+                    <col span="1 " style="width: 14%; ">
+                    <col span="1 " style="width: 1%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                    <col span="1 " style="width: 30%">
+                    <col span="1 " style="width: 10%">
+                </colgroup>
+                <tr>
+                    <th>{{'normalization_values'|translate}}</th>
+                    <th colspan="4">{{'original_value'|translate}}</th>
+                </tr>
+
+                <tr>
+                    <th></th>
+                    <th colspan="2">{{'from'|translate}}</th>
+                    <th></th>
+                    <th>{{'to'|translate}}</th>
+                    <th></th>
+                </tr>
+
+                <tr>
+                    <td>4</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" [value]="0" [attr.disabled]="true" /></td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.four_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+
+                <tr>
+                    <td>3</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_left"
+                            placeholder="{{'from' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.three_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_left"
+                            placeholder="{{'from' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.two_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td> )</td>
+                </tr>
+
+                <tr>
+                    <td>1</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.one_left" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" [(ngModel)]="KPI_Selected.one_right"
+                            placeholder="{{'to' | translate}}" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} )</td>
+                </tr>
+
+                <tr>
+                    <td>0</td>
+                    <td>[</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.zero_left" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}}</td>
+                    <td><input type="text" class="form-control" placeholder="{{'from' | translate}}"
+                            [(ngModel)]="KPI_Selected.zero_right" />
+                    </td>
+                    <td>{{KPI_Selected.unit_of_measurement}} ]</td>
+                </tr>
+            </table>
+        </ng-template>
+
+        <p>{{errorMsg}}</p>
+        <div class="row" style="width: 100%;margin-top:15px;margin-bottom: 15px;">
+
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="cancel()">
+                    {{'cancel' | translate}}</button>
+            </div>
+
+            <div class=" col-md-2 ">
+                <button class="btn btn-lg btn-block btn btn-outline-primary " (click)="save()">
+                    {{'save' | translate}}</button>
+            </div>
+
+        </div>
+    </div>
+
+</ng-template>

@@ -1,0 +1,23 @@
+.subtitle_home {
+    font-size: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.img-disable {
+    filter: grayscale(100%);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.center_loader {
+    display: flex;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,0 +1,206 @@
+<ng-container *ngTemplateOutlet="!showNewContextualQ ?  listContextualQTemplate : createNewContextualQTemplate">
+</ng-container>
+<ng-template #listContextualQTemplate>
+    <div>
+        <div class="row" style="width: 100%;margin-top:22px">
+            <div class="col-md-4">
+                <button (click)="changeView()" class="btn btn-lg  btn-block btn btn-outline-primary">{{'add_new_contextual_question'|translate}}</button>
+            </div>
+
+            <div class="col-md-4"></div>
+            <div class="col-md-2" *ngIf="showSaveButton">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="cancelOrder()">
+                    {{'cancel' | translate}}
+                </button>
+            </div>
+
+            <div class="col-md-2" *ngIf="showSaveButton">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="saveOrder()">
+                    {{'saveOrder' | translate}}
+                </button>
+            </div>
+        </div>
+        <div class="row" style="width: 100%;margin-top:20px;margin-bottom: 20px;">
+        </div>
+    </div>
+
+    <div class="row" style="width: 100%;margin-top:15px">
+        <div class="row col-md-12">
+            <div class="col-md-1"> <i class='fa fa-sort' style='font-size:24px; '></i></div>
+            <div class="col-md-1"> {{'order'|translate}}</div>
+            <div class="col-md-8"> {{'contextual_info' | translate}} </div>
+
+        </div>
+    </div>
+    <div cdkDropList (cdkDropListDropped)="drop($event)">
+        <div class="row col-md-12" *ngFor="let quest of all_contextualQs; let i=index" style="margin-top: 15px;margin-bottom: 10px;" cdkDrag>
+            <mat-divider style="margin-bottom: 10px;"></mat-divider>
+            <div class="row;col-md-1" cdkDragHandle>
+                <img src="https://img.icons8.com/windows/64/000000/grip-lines.png" style="height: 20%" />
+            </div>
+            <div class="col-md-1">
+                <div>{{quest.question_orderofappearance}}
+                </div>
+                <div><del *ngIf="showSaveButton && quest.originalOrder!=quest.question_orderofappearance">{{quest.originalOrder}}</del>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4">{{'question_title'|translate}}:</div>
+                    <div class="col-md-8">{{quest.question_title}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">{{'question_alternativetitle'|translate}}:</div>
+                    <div class="col-md-8">{{quest.question_alternativetitle}}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        {{'flagged_as_visible' |translate}}
+                    </div>
+                    <div class="col-md-8">
+                        <input type="checkbox" [checked]="!quest.flagged" disabled>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        {{'potential_answers' | translate}}:
+                    </div>
+                </div>
+                <ng-container *ngIf="quest.potential_answers.length<5">
+                    <div>
+                        <mat-radio-group style="margin:5px;">
+                            <mat-radio-button *ngFor="let ans of quest.potential_answers" [value]="ans.answer_id" style="margin: 5px" disabled>
+                                {{ans.answer_title}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </ng-container>
+
+                <ng-container *ngIf="quest.potential_answers.length>4">
+                    <div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>{{'potential_answers' | translate}}</mat-label>
+                            <mat-select>
+                                <mat-option *ngFor="let pAnswer of quest.potential_answers" [value]="pAnswer.answer_id" disabled="true">
+                                    {{pAnswer.answer_title}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-md-2">
+                <button class="btn-block btn btn-outline-primary" (click)="edit(quest)">
+                    {{'edit' | translate}}
+                </button>
+            </div>
+
+        </div>
+    </div>
+</ng-template>
+<div class="row" style="width: 100%;"></div>
+
+<ng-template #createNewContextualQTemplate>
+
+    <div *ngIf="isSaving" class="center_loader;row" style="width: 100%;height: 100vh;margin-top:22px">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="!isSaving" style="width: 100%;">
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-11">
+                {{'question_title' | translate}}
+                <input type="text" class="form-control" [(ngModel)]="contextualQ_selected.question_title" placeholder="{{'question_title' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-11">
+                {{'question_alternativetitle' | translate}}
+                <input type="text" class="form-control" [(ngModel)]="contextualQ_selected.question_alternativetitle" placeholder="{{'question_alternativetitle' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px" *ngIf="!newCQ">
+
+            <div class="col-md-6" style="margin-left: 2px;">
+
+                <mat-slide-toggle [checked]="contextualQ_selected.flagged" [(ngModel)]="contextualQ_selected.flagged">
+                    {{'hide_question' |translate}}
+                </mat-slide-toggle>
+
+            </div>
+
+            <div class="col-md-1"></div>
+
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-5">
+                {{'potential_answers' | translate}}
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-1"> <i class='fa fa-sort' style='font-size:24px; '></i></div>
+            <div class="col-md-1"> {{'order'|translate}}</div>
+            <div class="col-md-7"> {{'answer_title' | translate}} </div>
+        </div>
+        <div cdkDropList (cdkDropListDropped)="orderAnswers($event)">
+
+            <div *ngFor="let pAnswer of potential_answers; let i = index;" class="row" style="width: 100%;margin-top:15px" cdkDrag>
+
+                <div class="col-md-1" cdkDragHandle>
+                    <img src="https://img.icons8.com/windows/64/000000/grip-lines.png" style="height: 50%; margin-top: 20px;" />
+                </div>
+                <div class="col-md-1">
+                    <br>
+                    <div class="row;col-md-12">{{potential_answers[i].answer_orderofappearance}}</div>
+
+                </div>
+                <div class="col-md-9">
+                    {{'answer_title' | translate}}
+                    <input type="text" class="form-control" [(ngModel)]="potential_answers[i].answer_title" placeholder="{{'answer_title' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+                </div>
+                <div class="col-md-1">
+                    <ng-container *ngIf="i>1">
+                        <br>
+                        <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="removePotentialAnswers(i)"> <i class="fa fa-trash-o"></i></button>
+
+
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-4">
+
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="addNewPotentialAnswers(1)">{{'add_potential_answer' |translate}}</button>
+
+            </div>
+        </div>
+        <p>{{errorMsg}}</p>
+
+        <div class="row" style="width: 100%;margin-top:15px;margin-bottom: 15px;">
+
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="cancel()">
+                    {{'cancel' | translate}}</button>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="save()">
+                    {{'save' | translate}}</button>
+            </div>
+
+        </div>
+
+    </div>
+</ng-template>

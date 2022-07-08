@@ -1,0 +1,86 @@
+<div id="modal-content-wrapper">
+  <div class="modal-header">
+    <p style="font-size: 20px; margin-bottom: 0" class="center">
+    <div>{{'question'|translate}}: {{developerQuestionSelected.developerquestion_title}}</div>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <div class="modal-body">
+    <div *ngIf="isLoading" class="center_loader">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="!isLoading">
+      <div *ngIf="developerQuestionSelected.developerquestion_type_abb != 'T'" class="row"
+        style="width: 100%;margin-top:20px">
+
+        <div class="col-md-1"></div>
+        <div class="col-md-4" style="text-align: center;">
+
+          <h3 class="center">{{developerQuestionSelected.mean_rating | number:'1.0-1'}}</h3>
+          <ng-template #star let-fill="fill">
+            <span class="star" [class.full]="fill === 100">
+              <span [class]="getTemplate(developerQuestionSelected.mean_rating)"
+                [style.width.%]="fill">&#9733;</span>&#9733;
+            </span>
+          </ng-template>
+          <ngb-rating [(rate)]="developerQuestionSelected.mean_rating" [starTemplate]="star" [readonly]="true"
+            [max]="5">
+          </ngb-rating>
+          <p class="center">{{developerQuestionSelected.numberofratings}} {{'reviews'|translate}}</p>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-6">
+          <table>
+            <colgroup>
+              <col span="1 " style="width: 5%; ">
+              <col span="1 " style="width: 85%;margin-left: 5px; ">
+              <col span="1 " style="width: 5%;margin-left: 5px; ">
+              <col span="1 " style="width: 5%;margin-left: 5px; ">
+            </colgroup>
+            <ng-container *ngFor="let rat of developerQuestionSelected.rating_details.slice().reverse()">
+
+              <tr>
+                <td *ngIf="rat.rating==5"><span>5&#9733;</span></td>
+                <td *ngIf="rat.rating==4"><span>4&#9733;</span></td>
+                <td *ngIf="rat.rating==3"><span>3&#9733;</span></td>
+                <td *ngIf="rat.rating==2"><span>2&#9733;</span></td>
+                <td *ngIf="rat.rating==1"><span>1&#9733;</span></td>
+
+                <td>
+                  <mat-progress-bar mode="determinate"
+                    [value]="rat.numberofappearances/developerQuestionSelected.numberofratings*100 "
+                    matTooltip="Answers: {{rat.numberofappearances}}">
+                  </mat-progress-bar>
+                </td>
+
+                <td></td>
+                <td>{{rat.appearances}}</td>
+              </tr>
+
+            </ng-container>
+
+          </table>
+        </div>
+      </div>
+      <div *ngIf="developerQuestionSelected.hastext" class="row" style="margin-top:10px;width: 100%;">
+        <div class="col-md-11 card container-fluid card mb-5 " style="margin-top:10px;width: 100%;"
+          *ngFor="let comment of listOfComments ">
+          <div class="row" style="width: 100%;">
+            <span style="margin-right: 5px;margin-left: 5px;">{{comment.feedback_date | date}}</span>
+            <ng-template #star1 let-fill="fill">
+              <span [class.full]="fill === 100">
+                <span [class]="getTemplate(comment.feedback_rating)" [style.width.%]="fill">&#9733;</span>&#9733;
+              </span>
+            </ng-template>
+            <ngb-rating *ngIf="developerQuestionSelected.developerquestion_type_abb=='RT'"
+              [(rate)]="comment.feedback_rating" [starTemplate]="star1" [readonly]="true" [max]="5">
+            </ngb-rating>
+          </div>
+          <span [innerHTML]="comment.feedback_text | safe: 'html'"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,63 @@
+<div *ngIf="!isLoaded" class="center_loader">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div *ngIf="isLoaded" class="row " style="height:100%;text-align: center; margin: 2em;">
+    <div class="card pointer" routerLink="/monitoring" style="width: 46%;">
+        <div class="card-body">
+            <div>
+                <h4>{{'platform_monitoring_title' | translate | uppercase}}</h4>
+            </div>
+            <div>
+                <p class="subtitle_home">{{'platform_monitoring_msg' | translate}}</p>
+            </div>
+            <div><img style="max-width: 200px; max-height: 200px;" src="../../assets/icons/monitoring.svg" alt="Card image cap">
+            </div>
+        </div>
+    </div>
+
+    <div class="card pointer" routerLink="/comparison" style="width: 46%;">
+        <div class="card-body">
+            <div>
+                <h4>{{'platform_comparison_title' | translate | uppercase}}
+                </h4>
+            </div>
+            <div>
+                <p class="subtitle_home">
+                    {{'platform_comparison_msg' | translate}}</p>
+            </div>
+            <div><img style="max-width: 200px; max-height: 200px;" src="../../assets/icons/platform_comparison.svg" alt="Card image cap">
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<div *ngIf="isLoaded" class="row " style="text-align: center;margin: 2em;">
+    <div class="card" (click)="goToInDeep()" style="width: 46%;" [ngClass]="{'pointer': allowInDeep }">
+        <div class="card-body">
+            <div>
+                <h4>
+                    {{'platform_in-depth_information_title' | translate | uppercase}}</h4>
+            </div>
+            <div style="text-align: center">
+                <p class="subtitle_home">{{'platform_in-depth_information_msg' | translate}}</p>
+            </div>
+            <div><img style="max-width: 200px; max-height: 200px;" [ngClass]="{'img-disable': !allowInDeep }" src="../../assets/icons/in-depth_information.svg" alt="Card image cap">
+            </div>
+        </div>
+    </div>
+    <div class="card" (click)="goToAdmin()" style="width: 46%;" [ngClass]="{'pointer': isAdmin }">
+        <div class=" card-body ">
+            <div>
+                <h4>{{'platform_data_management_title' | translate | uppercase}}
+                </h4>
+            </div>
+            <div>
+                <p class=" subtitle_home ">{{'platform_data_management_msg' | translate}}</p>
+            </div>
+            <div><img style=" max-width: 200px; max-height: 200px; " [ngClass]="{'img-disable': !isAdmin }" src=" ../../assets/icons/data_management.svg " alt=" Card image cap ">
+            </div>
+        </div>
+    </div>
+</div>

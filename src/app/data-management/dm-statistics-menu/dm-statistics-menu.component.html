@@ -1,0 +1,40 @@
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
+
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_statistics_label_tooltip'|translate}}" matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'statistics_definition_title' | translate}}</span>
+                <img *ngIf="selected_tab_statistics_def" src="/assets/icons/info_light_blue.png" width="15px"
+                    height="15px" style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_statistics_def" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-statistics></app-dm-statistics>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <label class="pointer" matTooltip="{{'data_management_statistics_values_label_tooltip'|translate}}" matTooltipPosition="below" [matTooltipShowDelay]="1000">
+                <span>{{'statistics_values_title' | translate}}</span>
+                <img *ngIf="selected_tab_statistics_value" src="/assets/icons/info_light_blue.png" width="15px"
+                    height="15px" style="margin-left: 5px;">
+                <img *ngIf="!selected_tab_statistics_value" src="/assets/icons/info_grey.png" width="15px" height="15px"
+                    style="margin-left: 5px;">
+            </label>
+        </ng-template>
+        <div class="">
+            <ng-template matTabContent>
+                <app-dm-statistics-values></app-dm-statistics-values>
+            </ng-template>
+        </div>
+    </mat-tab>
+
+
+</mat-tab-group>

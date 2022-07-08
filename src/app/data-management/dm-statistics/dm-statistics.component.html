@@ -1,0 +1,116 @@
+<ng-container *ngTemplateOutlet="!showNewStatistics ?  listStatisticsTemplate : createNewStatisticsTemplate">
+</ng-container>
+<ng-template #listStatisticsTemplate>
+    <div>
+        <div class="row" style="width: 100%;margin-top:22px">
+            <div class="col-md-3">
+                <button (click)="changeView()"
+                    class="btn btn-lg  btn-block btn btn-outline-primary">{{'add_new_statistics'|translate}}</button>
+            </div>
+
+        </div>
+        <div class="row" style="width: 100%;margin-top:20px;margin-bottom: 20px;">
+        </div>
+    </div>
+    <div class="table-container" style="width: 100%;">
+        <table mat-table [dataSource]="statistics_list">
+            <ng-container matColumnDef="statistics_title">
+                <th mat-header-cell *matHeaderCellDef>{{'statistics_title'|translate}}</th>
+                <td mat-cell *matCellDef="let data">{{data.title}}</td>
+            </ng-container>
+            <ng-container matColumnDef="is_percentage">
+                <th mat-header-cell *matHeaderCellDef>{{'is_percentage'|translate}}</th>
+                <td mat-cell *matCellDef="let data">
+                    <ng-container *ngIf="data.is_percentage">{{'yes'| translate}}</ng-container>
+                    <ng-container *ngIf="!data.is_percentage">{{'no'| translate}}</ng-container>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="higher_is_better">
+                <th mat-header-cell *matHeaderCellDef>{{'higher_is_better'|translate}}</th>
+                <td mat-cell *matCellDef="let data">
+                    <ng-container *ngIf="data.larger_is_better">{{'yes'| translate}}</ng-container>
+                    <ng-container *ngIf="!data.larger_is_better">{{'no'| translate}}</ng-container>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit_button">
+                <th mat-header-cell *matHeaderCellDef></th>
+                <td mat-cell *matCellDef="let data">
+                    <button mat-button class="btn-block btn btn-outline-primary"
+                        (click)="edit(data)">{{'edit'|translate}}</button>
+
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="columnsTitle; sticky: true"></tr>
+            <tr mat-row *matRowDef="let row; columns: columnsTitle;"> </tr>
+        </table>
+    </div>
+</ng-template>
+<div class="row" style="width: 100%;"></div>
+
+<ng-template #createNewStatisticsTemplate>
+
+    <div *ngIf="isSaving" class="center_loader;row" style="width: 100%;height: 100vh;margin-top:22px">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="!isSaving" style="width: 100%;">
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-11">
+                {{'statistics_title' | translate}}
+
+                <input type="text" class="form-control" placeholder="{{'statistics_title' | translate}}"
+                    [(ngModel)]="statistics_selected.title" [ngClass]="{ 'is-invalid': submitted }" />
+            </div>
+        </div>
+
+
+
+        <div class="row" style="width: 100%;margin-top:15px">
+            <div class="col-md-4">
+                {{'is_percentage'|translate}}<br>
+                <mat-radio-group style="margin:5px;" [(ngModel)]="statistics_selected.is_percentage">
+                    <mat-radio-button [value]="true" style="margin:5px;" name="is_percentage"
+                        [checked]="statistics_selected.is_percentage!=null && statistics_selected.is_percentage">
+                        {{'yes'|translate}}</mat-radio-button>
+                    <mat-radio-button [value]="false" name="is_percentage"
+                        [checked]="statistics_selected.is_percentage!=null && !statistics_selected.is_percentage">
+                        {{'no'|translate}}</mat-radio-button>
+                </mat-radio-group>
+
+            </div>
+            <div class="col-md-2">
+            </div>
+
+            <div class="col-md-4">
+                {{'higher_is_better'|translate}}<br>
+                <mat-radio-group style="margin:5px;" [(ngModel)]="statistics_selected.larger_is_better">
+                    <mat-radio-button [value]="true" style="margin:5px;" name="larger_is_better"
+                        [checked]="statistics_selected.larger_is_better!=null && statistics_selected.larger_is_better ">
+                        {{'yes'|translate}}</mat-radio-button>
+                    <mat-radio-button [value]="false" name="larger_is_better"
+                        [checked]="statistics_selected.larger_is_better!=null && !statistics_selected.larger_is_better">
+                        {{'no'|translate}}</mat-radio-button>
+                </mat-radio-group>
+
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%;margin-top:15px;margin-bottom: 15px;">
+
+            <div class="col-md-7">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="changeView()">
+                    {{'cancel' | translate}}</button>
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-lg  btn-block btn btn-outline-primary" (click)="save()">
+                    {{'save' | translate}}</button>
+            </div>
+
+        </div>
+
+    </div>
+</ng-template>

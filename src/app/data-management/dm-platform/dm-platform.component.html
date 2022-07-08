@@ -1,0 +1,206 @@
+<ng-container *ngTemplateOutlet="!showNewPlatform ?  platformsListTemplate : newPlatformsTemplate">
+</ng-container>
+<ng-template #platformsListTemplate>
+    <div>
+        <div class="row" style="width: 100%;margin-top:22px" *ngIf="isAdmin">
+            <div class="col-md-3">
+                <button (click)="changeView()"
+                    class="btn btn-lg  btn-block btn btn-outline-primary">{{'new_platform'|translate}}</button>
+            </div>
+
+        </div>
+
+        <div *ngIf="isLoading" class="center_loader;row" style="width: 100%;margin-top:22px">
+            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+        </div>
+        <div class="row" style="width: 100%;margin-top:20px;margin-bottom: 20px;" *ngIf="isAdmin||numUserPlatforms>1">
+
+            <table mat-table [dataSource]="tableDataSource">
+
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef>{{'name'|translate}}</th>
+                    <td mat-cell *matCellDef="let data"> <img src={{data.platform_logo_URL}}
+                            style="width: 75px;margin-right: 5px;"> {{data.platform_title}}
+                    </td>
+
+                </ng-container>
+
+                <ng-container matColumnDef="platform_flagged">
+                    <th mat-header-cell *matHeaderCellDef>{{'platform_flagged'|translate}}</th>
+                    <td mat-cell *matCellDef="let data">
+                        <ng-container *ngIf="data.platform_flagged">{{'yes'| translate}}</ng-container>
+                        <ng-container *ngIf="!data.platform_flagged">{{'no'| translate}}</ng-container>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>{{'description'|translate}}</th>
+                    <td mat-cell *matCellDef="let data"> {{data.platform_description}}</td>
+                </ng-container>
+                <ng-container matColumnDef="contextual_info">
+                    <th mat-header-cell *matHeaderCellDef>{{'contextual_info'|translate}}</th>
+                    <td mat-cell *matCellDef="let data">{{data.contextual_info}}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="edit_button">
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let data">
+                        <button mat-button class="btn-block btn btn-outline-primary"
+                            (click)="edit(data.platform_index)">{{'edit'|translate}}</button>
+
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="columnsTitle"></tr>
+                <tr mat-row *matRowDef="let row; columns: columnsTitle;"> </tr>
+
+            </table>
+        </div>
+    </div>
+</ng-template>
+<div class="row" style="width: 100%;"></div>
+<ng-template #newPlatformsTemplate>
+    <div *ngIf="isSaving" class="center_loader;row" style="width: 100%;height: 100vh;margin-top:22px">
+        <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
+    <div *ngIf="!isSaving" style="width: 100%;">
+        <div class="row" style="margin-top:22px;width: 100%;">
+            <div *ngIf="isNewPlatform" class="col-md-12">
+                <b>{{'new_platform' |translate}}</b>
+            </div>
+            <div *ngIf="!isNewPlatform" class="col-md-12">
+                <b>{{'edit_platform' |translate}}</b>
+            </div>
+        </div>
+
+        <div *ngIf="!isNewPlatform" class="row" style="margin-top: 20px;width: 100%;">
+            <div class="col-md-6" style="margin-left: 2px;">
+                <mat-slide-toggle [checked]="platformSelected.flagged" [(ngModel)]="platformSelected.flagged"
+                    [disabled]="!isAdmin">
+                    {{'hide_platform' |translate}}
+                </mat-slide-toggle>
+
+            </div>
+        </div>
+        <form [formGroup]="platformForm">
+            <div class="row" style="margin-top:15px;width: 100%;">
+
+                <div class="col-md-11">
+                    {{'plaftorm_name' | translate}}
+                    <input type="text" class="form-control" formControlName="platform_title" *ngIf="isAdmin"
+                        placeholder="{{'plaftorm_name' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+                    <input type="text" class="form-control" formControlName="platform_title" *ngIf="!isAdmin"
+                        disabled="true" placeholder="{{'plaftorm_name' | translate}}"
+                        [ngClass]="{ 'is-invalid': submitted  }" />
+                </div>
+                <div class="col-md-3"></div>
+                <!--<div class="col-md-4">
+                    {{'registerd_on' | translate}}
+                    <input type="date" formControlName="register_on" class="form-control" placeholder="{{'register_on' | translate}}" [ngClass]="{ 'is-invalid': submitted  }" />
+                    <div *ngIf="submitted " class="invalid-feedback">
+                        <div *ngIf="form.register_on.errors.required">{{'register_on_required' | translate}}</div>
+                    </div>
+                </div>-->
+            </div>
+            <div class="row" style="width: 100%;margin-top:15px">
+                <div class="col-md-11">
+                    {{'platform_description' | translate}}
+                    <textarea type="text" class="form-control" formControlName="platform_description" *ngIf="isAdmin"
+                        placeholder="{{'platform_description' | translate}}"
+                        [ngClass]="{ 'is-invalid': submitted  }"></textarea>
+                    <textarea type="text" class="form-control" formControlName="platform_description" *ngIf="!isAdmin"
+                        disabled="true" placeholder="{{'platform_description' | translate}}"
+                        [ngClass]="{ 'is-invalid': submitted  }"></textarea>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top:15px;width: 100%;" *ngIf="isAdmin">
+                <div class="col-md-12">{{'platformLogo'|translate}}</div>
+                <div class="col-md-3">
+                    <input #file type="file" accept="image/*" (change)="onFileSelected($event)">
+                    <button #upload (click)="file.click()" class="btn btn-lg btn-block btn btn-outline-primary"><i
+                            class="fa fa-cloud-upload"></i> {{'upload_logo' | translate}}</button>
+                    <div *ngIf="isInvalidFile" class="alert alert-danger">{{uploadErrorMsg}}</div>
+
+                </div>
+                <div class="col-md-6"></div>
+                <div class="col-md-2" *ngIf="logoLoaded">
+                    <button class="btn btn-lg btn-block btn btn-outline-primary " (click)="removeLogo() ">
+                        {{'remove_logo' | translate}}</button>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="logoLoaded" style="margin-top:15px;width: 100%;">
+                <div class="col-md-12">
+                    <div class="col-md-11">
+                        <img src={{urlImage}} style="border: 1px solid #000; max-height: 300px;">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top:15px;width: 100%;">
+                <div class="col-md-4">
+                    {{'contextual_info' | translate}}
+
+                </div>
+            </div>
+
+        </form>
+
+        <div class="row" style="margin-top:15px;width: 100%;" *ngFor="let contextualQ of contextualQuestionPSelected">
+
+            <div class="col-md-8">
+                {{contextualQ.question_title}}
+            </div>
+
+            <ng-container *ngIf="contextualQ.potential_answers.length<3">
+                <div class="col-md-4">
+
+                    <mat-radio-group *ngFor="let pAns of contextualQ.potential_answers" style="margin:5px;"
+                        [(ngModel)]="contextualQ.question_answer_id">
+                        <mat-radio-button style="margin:5px;" [(value)]="pAns.answer_id"
+                            (change)="selectAnswer(pAns.answer_id, contextualQ.question_id)">
+                            {{pAns.answer_title}}</mat-radio-button>
+                    </mat-radio-group>
+
+                    <!-- <mat-radio-group style="margin:5px;">
+                                    <mat-radio-button *ngFor="let pAns of contextualQ.potential_answers" [(value)]="pAns.question_answer_id" style="margin: 10px">
+                                        {{pAns.answer_title}}
+                                    </mat-radio-button>
+                                </mat-radio-group>-->
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="contextualQ.potential_answers.length>=3">
+                <div class="col-md-4">
+                    <mat-form-field appearance="fill">
+                        <mat-select [(ngModel)]="contextualQ.question_answer_id"
+                            (selectionChange)="selectAnswer($event.value, contextualQ.question_id)">
+                            <mat-option *ngFor=" let pAns of contextualQ.potential_answers " [(value)]="pAns.answer_id">
+                                {{pAns.answer_title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </ng-container>
+
+
+        </div>
+        <div class="row" style="width: 100%;margin-top:15px;margin-bottom: 15px; ">
+            <div class="col-md-7 ">
+            </div>
+            <div class="col-md-2 ">
+                <button class="btn btn-lg btn-block btn btn-outline-primary " (click)="cancel() ">
+                    {{'cancel' | translate}}</button>
+            </div>
+            <div class="col-md-2" *ngIf="platformForm.valid">
+                <button class="btn btn-lg btn-block btn btn-outline-primary " (click)="save() ">
+                    {{'save' | translate}}</button>
+            </div>
+            <div class="col-md-2" *ngIf="!platformForm.valid">
+                <button class="btn btn-lg btn-block btn btn-outline-dark " [disabled]="!platformForm.valid"
+                    (click)="save() ">
+                    {{'save' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

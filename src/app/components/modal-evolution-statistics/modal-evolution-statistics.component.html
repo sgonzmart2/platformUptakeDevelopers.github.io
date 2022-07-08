@@ -1,0 +1,22 @@
+<div id="modal-content-wrapper">
+    <div class="modal-header">
+        <p style="font-size: 20px; margin-bottom: 0" class="center">
+            <div>{{nameGraph}}</div>
+            <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="row" style="margin-top:20px">
+            <div class="col-md-1">
+            </div>
+            <div *ngIf="isPercentage" class="col-md-10">
+                <canvas baseChart [datasets]="chartEvolution" [labels]="barChartEvolutionLabels" [options]="barChartOptionsPercentage" chartType="line" [legend]="false"></canvas>
+            </div>
+            <div *ngIf="!isPercentage" class="col-md-10">
+                <canvas baseChart [datasets]="chartEvolution" [labels]="barChartEvolutionLabels" [options]="barChartOptions" chartType="line" [legend]="false"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
